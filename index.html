@@ -1,61 +1,564 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aziz Panjiev - Python Backend Developer</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background: #f4f4f4; color: #333; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; text-align: center; }
-        h2 { color: #34495e; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        ul { list-style: none; padding: 0; }
-        li { margin-bottom: 10px; }
-        a { color: #007bff; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        .skills { display: flex; flex-wrap: wrap; gap: 10px; }
-        .skill-tag { background: #e7f3ff; padding: 5px 10px; border-radius: 20px; font-size: 14px; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aziz Panjiev — Python Backend Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --border: #1e1e2e;
+      --accent: #00e5a0;
+      --accent2: #5b6af0;
+      --text: #e8e8f0;
+      --muted: #6b6b80;
+      --tag-bg: #141424;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* ── GRID LINES ── */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── GLOW ORBS ── */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    .orb-1 { width: 500px; height: 500px; background: rgba(0, 229, 160, 0.06); top: -100px; right: -100px; }
+    .orb-2 { width: 400px; height: 400px; background: rgba(91, 106, 240, 0.07); bottom: 100px; left: -150px; animation-delay: -6s; }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to { transform: translate(30px, 20px) scale(1.05); }
+    }
+
+    /* ── LAYOUT ── */
+    .wrapper {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── HERO ── */
+    header {
+      padding: 100px 0 80px;
+      position: relative;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(0,229,160,0.25);
+      padding: 6px 14px;
+      border-radius: 40px;
+      margin-bottom: 28px;
+      animation: fadeUp 0.6s ease both;
+    }
+    .badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -2px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    h1 span { color: var(--accent); }
+
+    .role {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 20px;
+      letter-spacing: 1px;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .contacts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 36px;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .contacts a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      letter-spacing: 0.5px;
+    }
+    .contacts a:hover {
+      color: var(--text);
+      border-color: var(--accent);
+      background: rgba(0,229,160,0.06);
+      transform: translateY(-2px);
+    }
+    .contacts a svg { flex-shrink: 0; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
+      margin: 60px 0;
+    }
+
+    /* ── SECTION ── */
+    section { margin-bottom: 70px; }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+
+    p.summary {
+      font-size: 14px;
+      color: #b0b0c4;
+      line-height: 1.9;
+      max-width: 680px;
+    }
+
+    /* ── PROJECT CARDS ── */
+    .projects { display: flex; flex-direction: column; gap: 20px; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .card:hover {
+      border-color: rgba(0,229,160,0.3);
+      transform: translateY(-3px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .card:hover::before { opacity: 1; }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid rgba(0,229,160,0.25);
+      padding: 5px 12px;
+      border-radius: 40px;
+      white-space: nowrap;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .card-link:hover { background: rgba(0,229,160,0.1); }
+
+    .card ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .card ul li {
+      font-size: 13px;
+      color: #9090a8;
+      padding-left: 18px;
+      position: relative;
+      line-height: 1.7;
+    }
+    .card ul li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .highlight {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .skill-group {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      transition: border-color 0.2s;
+    }
+    .skill-group:hover { border-color: rgba(91,106,240,0.4); }
+
+    .skill-group-title {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+    .tag {
+      font-size: 11px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: #a0a0bc;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── EDUCATION ── */
+    .edu-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .edu-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 20px;
+    }
+    .edu-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .edu-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .edu-period {
+      font-size: 11px;
+      color: var(--accent);
+      margin-top: 8px;
+      border: 1px solid rgba(0,229,160,0.2);
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 40px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 70px 0 50px; }
+      .card-header { flex-direction: column; }
+      .edu-card { flex-direction: column; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Aziz Panjiev</h1>
-        <p style="text-align: center;">Python Backend Developer</p>
-        <p style="text-align: center;">
-            panjievdev@gmail.com | <a href="https://www.linkedin.com/in/aziz-panjiev">LinkedIn: linkedin.com/in/aziz-panjiev</a><br>
-            <a href="https://github.com/panjievdev">GitHub: github.com/panjievdev</a>
-        </p>
 
-        <h2>Professional Summary</h2>
-        <p>Experienced Python Backend Developer with proven expertise in Django and FastAPI frameworks for REST API development. Skilled in database optimization with PostgreSQL and Redis caching solutions. Proficient in containerization using Docker and Linux server administration. Demonstrates rapid learning capabilities for emerging technologies and excels in both collaborative team environments and independent project delivery.</p>
+<div class="grid-bg"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
 
-        <h2>Alijahon.uz E-Commerce Platform</h2>
-        <p>Developed comprehensive e-commerce platform using Django backend integrated with responsive HTML/CSS/JS frontend template.</p>
-        <p>Implemented secure user authentication system with login/register functionality, product listing, shopping cart and order management features.</p>
-        <p>Utilized PostgreSQL database for robust data management and optimized query performance for product catalog operations.</p>
-        <p>Designed scalable architecture with cloud deployment readiness and comprehensive testing implementation.</p>
-        <p>Built fully functional prototype demonstrating complete e-commerce workflow from product browsing to order completion.</p>
+<div class="wrapper">
 
-        <h2>AI Travel Agent</h2>
-        <p>Built intelligent travel planning system using FastAPI, PostgreSQL, and Redis for AI-powered trip recommendations.</p>
-        <p>Engineered JWT authentication with SMS OTP verification and integrated Gemini AI for conversational chat interface.</p>
-        <p>Implemented Redis caching reducing database load by 70% and achieving sub-100ms response times for 1000+ concurrent requests.</p>
-        <p>Containerized with Docker and developed Telegram bot integration for seamless user registration and notifications.</p>
-        <p><a href="https://github.com/Shaxob-py/tour-agents">GitHub: github.com/Shaxob-py/tour-agents</a></p>
+  <!-- ── HERO ── -->
+  <header>
+    <div class="badge">Available for opportunities</div>
+    <h1>Aziz<br><span>Panjiev</span></h1>
+    <p class="role">Python Backend Developer</p>
 
-        <h2>Education</h2>
-        <p>PDP Academy</p>
-        <p>Python Backend Development | Aug 2024 – Sept 2025</p>
-
-        <h2>Technical Skills</h2>
-        <div class="skills">
-            <span class="skill-tag">Programming Languages: Python</span>
-            <span class="skill-tag">Frameworks & Libraries: Django / DRF, FastAPI, SQLAlchemy, Celery, Alembic, Asyncio, Pydantic, UV</span>
-            <span class="skill-tag">Databases: PostgreSQL, SQLite, Redis</span>
-            <span class="skill-tag">Tools & Technologies: Git & GitHub, Docker & Docker Compose, Postman, Linux, Pycharm</span>
-            <span class="skill-tag">APIs: RESTful APIs, GraphQL, WebSockets, OpenAPI/Swagger</span>
-            <span class="skill-tag">Security: OAuth2, JWT</span>
-        </div>
+    <div class="contacts">
+      <a href="mailto:panjievdev@gmail.com">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+        panjievdev@gmail.com
+      </a>
+      <a href="https://github.com/panjievdev" target="_blank" rel="noopener">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        github.com/panjievdev
+      </a>
+      <a href="https://www.linkedin.com/in/aziz-panjiev" target="_blank" rel="noopener">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        linkedin.com/in/aziz-panjiev
+      </a>
     </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <!-- ── SUMMARY ── -->
+  <section class="reveal">
+    <p class="section-label">// about</p>
+    <p class="summary">
+      Experienced Python Backend Developer with proven expertise in <span class="highlight">Django</span> and <span class="highlight">FastAPI</span> for REST API development. Skilled in database optimization with <span class="highlight">PostgreSQL</span> and <span class="highlight">Redis</span> caching. Proficient in <span class="highlight">Docker</span> containerization and Linux server administration. Excels in both collaborative team environments and independent project delivery.
+    </p>
+  </section>
+
+  <!-- ── PROJECTS ── -->
+  <section class="reveal">
+    <p class="section-label">// projects</p>
+    <h2>Selected Work</h2>
+
+    <div class="projects">
+
+      <!-- Project 1 -->
+      <div class="card reveal">
+        <div class="card-header">
+          <div class="card-title">Alijahon.uz — E-Commerce Platform</div>
+        </div>
+        <ul>
+          <li>Developed a comprehensive e-commerce platform using <span class="highlight">Django</span> backend with responsive HTML/CSS/JS frontend.</li>
+          <li>Implemented secure user authentication — login, register, session management, shopping cart, and order processing.</li>
+          <li>Utilized <span class="highlight">PostgreSQL</span> for robust data management with optimized query performance on product catalog operations.</li>
+          <li>Designed scalable architecture with cloud deployment readiness and comprehensive test coverage.</li>
+        </ul>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="card reveal">
+        <div class="card-header">
+          <div class="card-title">AI Travel Agent</div>
+          <a class="card-link" href="https://github.com/Shaxob-py/tour-agents" target="_blank" rel="noopener">
+            <svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <ul>
+          <li>Built an intelligent travel planning system using <span class="highlight">FastAPI</span>, PostgreSQL, and Redis for AI-powered trip recommendations.</li>
+          <li>Engineered <span class="highlight">JWT authentication</span> with SMS OTP verification and integrated <span class="highlight">Gemini AI</span> for a conversational chat interface.</li>
+          <li>Implemented Redis caching reducing database load by <span class="highlight">70%</span>, achieving sub-100ms response times for 1000+ concurrent requests.</li>
+          <li>Containerized with <span class="highlight">Docker</span> and built Telegram bot integration for seamless user registration and notifications.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── SKILLS ── -->
+  <section class="reveal">
+    <p class="section-label">// skills</p>
+    <h2>Technical Stack</h2>
+
+    <div class="skills-grid">
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Languages</div>
+        <div class="tags">
+          <span class="tag">Python</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Frameworks & Libraries</div>
+        <div class="tags">
+          <span class="tag">Django</span>
+          <span class="tag">DRF</span>
+          <span class="tag">FastAPI</span>
+          <span class="tag">SQLAlchemy</span>
+          <span class="tag">Celery</span>
+          <span class="tag">Alembic</span>
+          <span class="tag">Asyncio</span>
+          <span class="tag">Pydantic</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Databases</div>
+        <div class="tags">
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">Redis</span>
+          <span class="tag">SQLite</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-title">APIs</div>
+        <div class="tags">
+          <span class="tag">REST</span>
+          <span class="tag">GraphQL</span>
+          <span class="tag">WebSockets</span>
+          <span class="tag">OpenAPI / Swagger</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Tools & DevOps</div>
+        <div class="tags">
+          <span class="tag">Docker</span>
+          <span class="tag">Docker Compose</span>
+          <span class="tag">Git</span>
+          <span class="tag">Linux</span>
+          <span class="tag">Postman</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Security</div>
+        <div class="tags">
+          <span class="tag">OAuth2</span>
+          <span class="tag">JWT</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EDUCATION ── -->
+  <section class="reveal">
+    <p class="section-label">// education</p>
+    <h2>Education</h2>
+
+    <div class="edu-card">
+      <div class="edu-icon">🎓</div>
+      <div>
+        <div class="edu-title">PDP Academy</div>
+        <div class="edu-sub">Python Backend Development</div>
+        <div class="edu-period">Aug 2024 – Sept 2025</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Aziz Panjiev &nbsp;·&nbsp; Built for GitHub Pages</p>
+  </footer>
+
+</div>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
 </body>
 </html>
